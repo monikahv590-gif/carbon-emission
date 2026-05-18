@@ -1,0 +1,41 @@
+						Carbon Emission Analysis Project
+
+
+Which industry had the highest CO2 emissions in the most recent year?
+	SELECT industry, emission_amount
+FROM emissions
+WHERE gas_type = 'CO2'
+AND year = (SELECT MAX(year) FROM emissions)
+ORDER BY emission_amount DESC
+LIMIT 1;
+
+2. What has been the trend of total emissions across sectors over the last decade? 
+	SELECT year,
+       SUM(emission_amount) AS total_emissions
+FROM emissions
+GROUP BY year
+ORDER BY year;
+
+3. Which industries showed a decline in emissions over the year?
+	SELECT industry,
+       MIN(emission_amount) AS lowest_emission,
+       MAX(emission_amount) AS highest_emission
+FROM emissions
+GROUP BY industry
+HAVING MAX(emission_amount) > MIN(emission_amount);
+
+4. How does the emission share differ across continents or economic zones?
+	SELECT continent,
+       SUM(emission_amount) AS total_emission
+FROM emissions
+GROUP BY continent
+ORDER BY total_emission DESC;
+
+5. Identify the top three emitting industries and their year-wise emission pattern.
+	SELECT industry,
+       year,
+       SUM(emission_amount) AS yearly_emission
+FROM emissions
+GROUP BY industry, year
+ORDER BY yearly_emission DESC;
+
